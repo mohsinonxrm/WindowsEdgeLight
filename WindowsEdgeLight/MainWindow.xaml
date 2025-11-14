@@ -24,7 +24,7 @@
         <!-- Edge Light Frame with Rounded Inner and Outer Edges using Path -->
         <Path x:Name="EdgeLightBorder" 
               Margin="20" 
-              Opacity="0.95"
+              Opacity="1.0"
               Stretch="None"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Stretch">
@@ -41,58 +41,5 @@
                 <BlurEffect Radius="8"/>
             </Path.Effect>
         </Path>
-        
-        <!-- Control Panel (Top-Right Corner) -->
-        <StackPanel x:Name="ControlPanel" 
-                    HorizontalAlignment="Right" 
-                    VerticalAlignment="Top" 
-                    Margin="20"
-                    Orientation="Horizontal"
-                    IsHitTestVisible="True"
-                    Background="#40000000"
-                    Opacity="0.3">
-            <StackPanel.Style>
-                <Style TargetType="StackPanel">
-                    <Setter Property="Opacity" Value="0.3"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Opacity" Value="1"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Style>
-            
-            <Button x:Name="BrightnessDownButton" 
-                    Content="🔅" 
-                    Click="BrightnessDown_Click"
-                    Width="40" Height="40" 
-                    Margin="5"
-                    FontSize="20"
-                    ToolTip="Decrease Brightness"/>
-            
-            <Button x:Name="BrightnessUpButton" 
-                    Content="🔆" 
-                    Click="BrightnessUp_Click"
-                    Width="40" Height="40" 
-                    Margin="5"
-                    FontSize="20"
-                    ToolTip="Increase Brightness"/>
-            
-            <Button x:Name="ToggleButton" 
-                    Content="💡" 
-                    Click="Toggle_Click"
-                    Width="40" Height="40" 
-                    Margin="5"
-                    FontSize="20"
-                    ToolTip="Toggle Light (Ctrl+Shift+L)"/>
-            
-            <Button x:Name="CloseButton" 
-                    Content="✖" 
-                    Click="Close_Click"
-                    Width="40" Height="40" 
-                    Margin="5"
-                    FontSize="16"
-                    ToolTip="Exit"/>
-        </StackPanel>
     </Grid>
 </Window>

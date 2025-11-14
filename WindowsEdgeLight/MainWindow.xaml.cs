@@ -11,12 +11,13 @@ namespace WindowsEdgeLight;
 public partial class MainWindow : Window
 {
     private bool isLightOn = true;
-    private double currentOpacity = 0.95;
+    private double currentOpacity = 1.0;  // Full brightness by default
     private const double OpacityStep = 0.15;
     private const double MinOpacity = 0.2;
     private const double MaxOpacity = 1.0;
     
     private NotifyIcon? notifyIcon;
+    private ControlWindow? controlWindow;
 
     // Global hotkey IDs
     private const int HOTKEY_TOGGLE = 1;
@@ -101,7 +102,7 @@ public partial class MainWindow : Window
 • Right-click taskbar icon for menu
 
 Created by Scott Hanselman
-Version 0.5";
+Version 0.6";
 
         System.Windows.MessageBox.Show(helpMessage, "Windows Edge Light - Help", 
             MessageBoxButton.OK, MessageBoxImage.Information);
@@ -138,6 +139,7 @@ Version 0.5";
     {
         SetupWindow();
         CreateFrameGeometry();
+        CreateControlWindow();
         
         var hwnd = new WindowInteropHelper(this).Handle;
         int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
@@ -151,6 +153,17 @@ Version 0.5";
         // Hook into Windows message processing
         HwndSource source = HwndSource.FromHwnd(hwnd);
         source.AddHook(HwndHook);
+    }
+
+    private void CreateControlWindow()
+    {
+        controlWindow = new ControlWindow(this);
+        
+        // Position at bottom center of main window
+        controlWindow.Left = this.Left + (this.Width - controlWindow.Width) / 2;
+        controlWindow.Top = this.Top + this.Height - controlWindow.Height - 100;
+        
+        controlWindow.Show();
     }
 
     private void CreateFrameGeometry()
@@ -220,6 +233,8 @@ Version 0.5";
             notifyIcon.Dispose();
         }
         
+        controlWindow?.Close();
+        
         base.OnClosed(e);
     }
 
@@ -248,13 +263,18 @@ Version 0.5";
         EdgeLightBorder.Visibility = isLightOn ? Visibility.Visible : Visibility.Collapsed;
     }
 
-    private void IncreaseBrightness()
+    public void HandleToggle()
+    {
+        ToggleLight();
+    }
+
+    public void IncreaseBrightness()
     {
         currentOpacity = Math.Min(MaxOpacity, currentOpacity + OpacityStep);
         EdgeLightBorder.Opacity = currentOpacity;
     }
 
-    private void DecreaseBrightness()
+    public void DecreaseBrightness()
     {
         currentOpacity = Math.Max(MinOpacity, currentOpacity - OpacityStep);
         EdgeLightBorder.Opacity = currentOpacity;
