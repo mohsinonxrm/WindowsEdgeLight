@@ -60,11 +60,12 @@ public partial class MainWindow : Window
             }
             else
             {
-                // Fallback to default icon
-                notifyIcon.Icon = System.Drawing.SystemIcons.Application;
+                // Try application icon from exe
+                var appIcon = System.Drawing.Icon.ExtractAssociatedIcon(Environment.ProcessPath ?? System.Reflection.Assembly.GetExecutingAssembly().Location);
+                notifyIcon.Icon = appIcon ?? System.Drawing.SystemIcons.Application;
             }
         }
-        catch
+        catch (Exception)
         {
             // Fallback to default icon if loading fails
             notifyIcon.Icon = System.Drawing.SystemIcons.Application;
