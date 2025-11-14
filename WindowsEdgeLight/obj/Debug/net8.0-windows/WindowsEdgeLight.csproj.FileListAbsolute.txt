@@ -18,3 +18,4 @@ D:\github\WindowsEdgeLight\WindowsEdgeLight\obj\Debug\net8.0-windows\refint\Wind
 D:\github\WindowsEdgeLight\WindowsEdgeLight\obj\Debug\net8.0-windows\WindowsEdgeLight.pdb
 D:\github\WindowsEdgeLight\WindowsEdgeLight\obj\Debug\net8.0-windows\WindowsEdgeLight.genruntimeconfig.cache
 D:\github\WindowsEdgeLight\WindowsEdgeLight\obj\Debug\net8.0-windows\ref\WindowsEdgeLight.dll
+D:\github\WindowsEdgeLight\WindowsEdgeLight\obj\Debug\net8.0-windows\WindowsEdgeLight.sourcelink.json

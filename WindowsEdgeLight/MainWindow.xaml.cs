@@ -14,10 +14,27 @@ public partial class MainWindow : Window
     private const double MinOpacity = 0.2;
     private const double MaxOpacity = 1.0;
 
+    // Global hotkey IDs
+    private const int HOTKEY_TOGGLE = 1;
+    private const int HOTKEY_BRIGHTNESS_UP = 2;
+    private const int HOTKEY_BRIGHTNESS_DOWN = 3;
+
     [DllImport("user32.dll")]
     private static extern int GetSystemMetrics(int nIndex);
     private const int SM_CXSCREEN = 0;
     private const int SM_CYSCREEN = 1;
+
+    [DllImport("user32.dll")]
+    private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+    
+    [DllImport("user32.dll")]
+    private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+    private const uint MOD_CONTROL = 0x0002;
+    private const uint MOD_SHIFT = 0x0004;
+    private const uint VK_L = 0x4C;
+    private const uint VK_UP = 0x26;
+    private const uint VK_DOWN = 0x28;
 
     public MainWindow()
     {
@@ -29,7 +46,8 @@ public partial class MainWindow : Window
         var primaryScreen = System.Windows.Forms.Screen.PrimaryScreen;
         if (primaryScreen == null) return;
         
-        var bounds = primaryScreen.Bounds;
+        // Use WorkingArea instead of Bounds to exclude taskbar
+        var workingArea = primaryScreen.WorkingArea;
         
         // Get DPI scale factor
         var source = PresentationSource.FromVisual(this);
@@ -43,10 +61,10 @@ public partial class MainWindow : Window
         }
         
         // Convert physical pixels to WPF DIPs
-        this.Left = bounds.X / dpiScaleX;
-        this.Top = bounds.Y / dpiScaleY;
-        this.Width = bounds.Width / dpiScaleX;
-        this.Height = bounds.Height / dpiScaleY;
+        this.Left = workingArea.X / dpiScaleX;
+        this.Top = workingArea.Y / dpiScaleY;
+        this.Width = workingArea.Width / dpiScaleX;
+        this.Height = workingArea.Height / dpiScaleY;
         this.WindowState = System.Windows.WindowState.Normal;
 
         EdgeLightBorder.Margin = new Thickness(20);
@@ -59,6 +77,53 @@ public partial class MainWindow : Window
         var hwnd = new WindowInteropHelper(this).Handle;
         int extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
         SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_TRANSPARENT | WS_EX_LAYERED);
+        
+        // Register global hotkeys
+        RegisterHotKey(hwnd, HOTKEY_TOGGLE, MOD_CONTROL | MOD_SHIFT, VK_L);
+        RegisterHotKey(hwnd, HOTKEY_BRIGHTNESS_UP, MOD_CONTROL | MOD_SHIFT, VK_UP);
+        RegisterHotKey(hwnd, HOTKEY_BRIGHTNESS_DOWN, MOD_CONTROL | MOD_SHIFT, VK_DOWN);
+        
+        // Hook into Windows message processing
+        HwndSource source = HwndSource.FromHwnd(hwnd);
+        source.AddHook(HwndHook);
+    }
+
+    private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        const int WM_HOTKEY = 0x0312;
+        
+        if (msg == WM_HOTKEY)
+        {
+            int hotkeyId = wParam.ToInt32();
+            
+            switch (hotkeyId)
+            {
+                case HOTKEY_TOGGLE:
+                    ToggleLight();
+                    handled = true;
+                    break;
+                case HOTKEY_BRIGHTNESS_UP:
+                    IncreaseBrightness();
+                    handled = true;
+                    break;
+                case HOTKEY_BRIGHTNESS_DOWN:
+                    DecreaseBrightness();
+                    handled = true;
+                    break;
+            }
+        }
+        
+        return IntPtr.Zero;
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        var hwnd = new WindowInteropHelper(this).Handle;
+        UnregisterHotKey(hwnd, HOTKEY_TOGGLE);
+        UnregisterHotKey(hwnd, HOTKEY_BRIGHTNESS_UP);
+        UnregisterHotKey(hwnd, HOTKEY_BRIGHTNESS_DOWN);
+        
+        base.OnClosed(e);
     }
 
     private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
@@ -86,16 +151,26 @@ public partial class MainWindow : Window
         EdgeLightBorder.Visibility = isLightOn ? Visibility.Visible : Visibility.Collapsed;
     }
 
-    private void BrightnessUp_Click(object sender, RoutedEventArgs e)
+    private void IncreaseBrightness()
     {
         currentOpacity = Math.Min(MaxOpacity, currentOpacity + OpacityStep);
         EdgeLightBorder.Opacity = currentOpacity;
     }
 
-    private void BrightnessDown_Click(object sender, RoutedEventArgs e)
+    private void DecreaseBrightness()
     {
         currentOpacity = Math.Max(MinOpacity, currentOpacity - OpacityStep);
         EdgeLightBorder.Opacity = currentOpacity;
+    }
+
+    private void BrightnessUp_Click(object sender, RoutedEventArgs e)
+    {
+        IncreaseBrightness();
+    }
+
+    private void BrightnessDown_Click(object sender, RoutedEventArgs e)
+    {
+        DecreaseBrightness();
     }
 
     private void Close_Click(object sender, RoutedEventArgs e)

@@ -12,7 +12,8 @@ A lightweight WPF application that adds a customizable glowing edge light effect
 - **Always On Top**: Stays visible above all other windows
 - **Keyboard Shortcuts**: 
   - `Ctrl+Shift+L` - Toggle light on/off
-  - `Esc` - Exit application
+  - `Ctrl+Shift+Up` - Increase brightness
+  - `Ctrl+Shift+Down` - Decrease brightness
 - **Gradient Effect**: Beautiful white gradient with subtle blur for a professional look
 
 ## Screenshots
@@ -62,7 +63,9 @@ The application creates a smooth, glowing border around the edges of your primar
 ### Keyboard Shortcuts
 
 - **Ctrl+Shift+L**: Toggle the edge light on/off
-- **Esc**: Exit the application
+- **Ctrl+Shift+Up**: Increase brightness
+- **Ctrl+Shift+Down**: Decrease brightness
+- **Taskbar**: Right-click the taskbar icon to close the application
 
 ## Technical Details
 
@@ -111,6 +114,14 @@ Requires:
 - Or .NET 8.0 SDK for command-line builds
 
 ## Version History
+
+### v0.3 - Global Hotkeys and Taskbar Support
+- Added global hotkeys for brightness control (Ctrl+Shift+Up/Down)
+- Fixed taskbar overlap - window now respects taskbar area
+- Added taskbar icon for easy right-click close
+- Removed conflicting exit hotkey
+- Added custom ring light icon
+- Added assembly information with author details
 
 ### v0.2 - Primary Monitor Display Fix
 - Fixed window to display on primary monitor only

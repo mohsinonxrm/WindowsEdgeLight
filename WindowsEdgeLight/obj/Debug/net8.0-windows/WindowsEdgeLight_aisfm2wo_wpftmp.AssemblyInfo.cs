@@ -10,16 +10,13 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("Scott Hanselman")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("WindowsEdgeLight")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © 2025 Scott Hanselman")]
-[assembly: System.Reflection.AssemblyDescriptionAttribute(("A lightweight WPF application that adds a customizable glowing edge light effect " +
-    "around your primary monitor"))]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("0.3.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.3+417ed691998184f1f61dda2222fe8b84b7059aee")]
-[assembly: System.Reflection.AssemblyProductAttribute("Windows Edge Light")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+417ed691998184f1f61dda2222fe8b84b7059aee")]
+[assembly: System.Reflection.AssemblyProductAttribute("WindowsEdgeLight")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WindowsEdgeLight")]
-[assembly: System.Reflection.AssemblyVersionAttribute("0.3.0.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 
