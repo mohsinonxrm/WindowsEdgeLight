@@ -4,6 +4,7 @@ A lightweight WPF application that adds a customizable glowing edge light effect
 
 ## Features
 
+- **Automatic Updates**: Built-in update system checks GitHub Releases for new versions
 - **Primary Monitor Display**: Automatically detects and displays on your primary monitor, even in multi-monitor setups
 - **DPI Aware**: Properly handles high-DPI displays (4K monitors with scaling)
 - **Click-Through Transparency**: Overlay doesn't interfere with your work - all clicks pass through to applications beneath
@@ -132,6 +133,13 @@ Requires:
 - Or .NET 10.0 SDK for command-line builds
 
 ## Version History
+
+### v0.6 - Automatic Update System
+- Integrated Updatum for automatic updates from GitHub Releases
+- Beautiful update dialog with release notes
+- Download progress tracking
+- One-click install for new versions
+- See [UPDATUM_INTEGRATION.md](UPDATUM_INTEGRATION.md) for details
 
 ### v0.3 - Global Hotkeys and Taskbar Support
 - Added global hotkeys for brightness control (Ctrl+Shift+Up/Down)

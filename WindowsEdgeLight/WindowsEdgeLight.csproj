@@ -31,5 +31,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Updatum" Version="1.1.6" />
+  </ItemGroup>
 
 </Project>
